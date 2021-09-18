@@ -21,13 +21,13 @@ public class PaymentRoll {
 		this.employee_type = employee_type;
 	}	
 	
-	public static void pass_day(Hashtable<Integer,Employee> HT,int day,int month,int year,int dayofweek,int totalsize) {
-		System.out.println("Hoje: " + day + "/" + month + "/" + year + " Dia da Semana: " + dayofweek);
+	public static void pass_day(Hashtable<Integer,Employee> HT,int day,int month,int year,int week_day,int totalsize) {
+		System.out.println("Hoje: " + day + "/" + month + "/" + year + " Dia da Semana: " + week_day);
 		int has_employees = 0;
 		System.out.println("\nFOLHA DE PAGAMENTO:");
-		for(int i = 1;i <= totalsize;i++) {
+		for(int i = 0;i <= totalsize;i++) {
 			if(HT.containsKey(i)) {
-				if((HT.get(i).get_payment_day() == day) && (HT.get(i).get_payment_month() == month) && (HT.get(i).get_payment_year() == year) && (HT.get(i).get_payment_week_day() == dayofweek)) {
+				if((HT.get(i).get_payment_day() == day) && (HT.get(i).get_payment_month() == month) && (HT.get(i).get_payment_year() == year) && (HT.get(i).get_payment_week_day() == week_day)) {
 					has_employees++;
 					System.out.println("Nome: " + HT.get(i).get_name());
 					System.out.println("Endereco: " + HT.get(i).get_adress());
@@ -53,7 +53,7 @@ public class PaymentRoll {
 					HT.get(i).set_first_day(day);
 					HT.get(i).set_first_month(month);
 					HT.get(i).set_first_year(year);
-					HT.get(i).set_first_week_day(dayofweek);
+					HT.get(i).set_first_week_day(week_day);
 					PaymentRoll.set_payment_schedule(HT,i);
 					if(HT.get(i).get_type() == 'H') {
 						if(HT.get(i) instanceof Employee) {
@@ -91,19 +91,19 @@ public class PaymentRoll {
 			else if(current_schedule.equals("Quinta Semanal"))  DayIWant = 5;
 			else if(current_schedule.equals("Sexta Semanal") || current_schedule.equals("Semanalmente")) DayIWant = 6;
 				
-			int dayp,monthp,yearp,dayofweekp;
+			int dayp,monthp,yearp,week_dayp;
 			dayp = HT.get(aux).get_first_payment_day();
 			monthp = HT.get(aux).get_first_payment_month();
 			yearp = HT.get(aux).get_first_payment_year();
-			dayofweekp = HT.get(aux).get_first_week_day(); 
+			week_dayp = HT.get(aux).get_first_week_day(); 
 				
 			for(int i = 0;i < 7;i++) {
 				dayp++;
-				dayofweekp++;
-				if(dayofweekp == DayIWant) {
+				week_dayp++;
+				if(week_dayp == DayIWant) {
 					break;
 				}
-				if(dayofweekp == 8) dayofweekp = 1;
+				if(week_dayp == 8) week_dayp = 1;
 				if(dayp == 29 && monthp == 2) {
 					dayp = 1;
 					monthp++;
@@ -124,7 +124,7 @@ public class PaymentRoll {
 			HT.get(aux).set_payment_day(dayp);
 			HT.get(aux).set_payment_month(monthp);
 			HT.get(aux).set_payment_year(yearp);
-			HT.get(aux).set_payment_week_day(dayofweekp);
+			HT.get(aux).set_payment_week_day(week_dayp);
 		}
 		else if(HT.get(aux).get_type() == 'A'){
 			if(HT.get(aux).get_agenda() == "Mensalmente" || HT.get(aux).get_agenda() == "Mensal") {
@@ -223,20 +223,20 @@ public class PaymentRoll {
 			else if(current_schedule == "Quinta Semanal")  DayIWant = 5;
 			else if(current_schedule == "Sexta Semanal" || current_schedule == "Bi-Semanalmente") DayIWant = 6;
 			
-			int dayp,monthp,yearp,dayofweekp,totaldays = 0;
+			int dayp,monthp,yearp,week_dayp,totaldays = 0;
 			dayp = HT.get(aux).get_first_payment_day();
 			monthp = HT.get(aux).get_first_payment_month();
 			yearp = HT.get(aux).get_first_payment_year();
-			dayofweekp = HT.get(aux).get_first_week_day(); 
+			week_dayp = HT.get(aux).get_first_week_day(); 
 			
 			for(int i = 0;i < 15;i++) {
 				dayp++;
-				dayofweekp++;
-				if(dayofweekp == 8) dayofweekp = 1;
-				if(dayofweekp == DayIWant) {
+				week_dayp++;
+				if(week_dayp == 8) week_dayp = 1;
+				if(week_dayp == DayIWant) {
 					totaldays++;
 				}
-				if(dayofweekp == DayIWant && totaldays == 2) {
+				if(week_dayp == DayIWant && totaldays == 2) {
 					break;
 				}
 				if(dayp == 29 && monthp == 2) {
@@ -259,7 +259,7 @@ public class PaymentRoll {
 			HT.get(aux).set_payment_day(dayp);
 			HT.get(aux).set_payment_month(monthp);
 			HT.get(aux).set_payment_year(yearp);
-			HT.get(aux).set_payment_week_day(dayofweekp);
+			HT.get(aux).set_payment_week_day(week_dayp);
 		}
 	}
 }

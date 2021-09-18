@@ -41,17 +41,17 @@ public class Main {
 		year = newCalendar.get(Calendar.YEAR);
 		week_day = newCalendar.get(Calendar.DAY_OF_WEEK);
 		PaymentRoll SetDefault0 = new PaymentRoll();
-		SetDefault0.set_schedule("semanalmente");
+		SetDefault0.set_schedule("Semanalmente");
 		SetDefault0.set_employee_type('H');
 		Payment_Schedules.add(SetDefault0);
 		
 		PaymentRoll SetDefault1 = new PaymentRoll();
-		SetDefault1.set_schedule("mensalmente");
+		SetDefault1.set_schedule("Mensalmente");
 		SetDefault1.set_employee_type('A');
 		Payment_Schedules.add(SetDefault1);
 		
 		PaymentRoll SetDefault2 = new PaymentRoll();
-		SetDefault2.set_schedule("bi-semanalmente");
+		SetDefault2.set_schedule("Bi-semanalmente");
 		SetDefault2.set_employee_type('C');
 		Payment_Schedules.add(SetDefault2);
 		//Done
@@ -69,6 +69,8 @@ public class Main {
 			System.out.println("7 - Rodar a folha de pagamento para hoje");
 			System.out.println("8 - Undo/Redo:");
 			System.out.println("9 - Agenda de pagamento");	
+			System.out.println("10 - Criar agenda de pagamento");
+			System.out.println("11 - Mostrar funcionarios cadastrados");
 			System.out.println();			
 			
 				sel = S.nextInt();
@@ -145,7 +147,7 @@ public class Main {
 						System.out.println("Digite a taxa sindical deste funcionario");
 						syndicate_tax = S.nextDouble();
 						A.set_syndicate_tax(syndicate_tax);
-						A.set_id_s(count_s);
+						A.set_id_s(count_s+100);
 						count_s++;
 					}
 					HT.put(count_id, A);					
@@ -170,7 +172,7 @@ public class Main {
 						System.out.println("Digite a taxa sindical deste funcionario");
 						syndicate_tax = S.nextDouble();
 						A.set_syndicate_tax(syndicate_tax);
-						A.set_id_s(count_s);
+						A.set_id_s(count_s+100);
 						count_s++;
 					}
 					HT.put(count_id, A);							
@@ -194,7 +196,7 @@ public class Main {
 						System.out.println("Digite a taxa sindical deste funcionario:");
 						syndicate_tax = S.nextDouble();
 						A.set_syndicate_tax(syndicate_tax);
-						A.set_id_s(count_s);
+						A.set_id_s(count_s+100);
 						count_s++;
 					}
 					HT.put(count_id, A);									
@@ -207,6 +209,7 @@ public class Main {
 			}
 			if(sel == 2) { // Remover funcionario
 				System.out.println("Lista de funcionários cadastrados:");
+				System.out.println();
 				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
 				System.out.println();
 				System.out.println("Digite o ID do funcionario a ser removido:");
@@ -224,6 +227,7 @@ public class Main {
 			if(sel == 3) { // lancar cartao de ponto
 				int current_employee_id = -1;
 				System.out.println("Lista de funcionários cadastrados:");
+				System.out.println();
 				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
 				System.out.println();
 				System.out.println("Digite o ID do funcionario desejado: ");
@@ -322,6 +326,7 @@ public class Main {
 			}
 			if(sel == 4) { // lancar resultado de venda
 				System.out.println("Lista de funcionários cadastrados:");
+				System.out.println();
 				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
 				System.out.println();
 				System.out.println("Digite o ID do funcionario desejado:");
@@ -387,6 +392,7 @@ public class Main {
 				Undo_Redo.Save(sel,day,month,year,week_day,total_size,array_position,HT);				
 			}
 			if(sel == 6){ // Alterar detalhes de um funcionario
+				System.out.println();
 				System.out.println("Lista de funcionarios cadastrados:");
 				System.out.println();
 				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
@@ -409,7 +415,7 @@ public class Main {
 				 Undo_Redo.Save(sel,day,month,year,week_day,total_size,array_position,HT);
 			}
 			if(sel == 7){ // rodar folha para hoje
-				for(int i = 1;i <= total_size;i++) {
+				for(int i = 0;i <= total_size;i++) {
 					if(HT.containsKey(i)) {
 						if(HT.get(i).get_type() == 'A') Employee.calculate_default_payment(HT,i);
 						if(HT.get(i).get_type() == 'H') {
@@ -489,7 +495,7 @@ public class Main {
 						week_day = redo.get_old_week_day();
 						HT.clear();
 						double commission = 0;
-						for(int currentid = 1;currentid <= total_size;currentid++) {
+						for(int currentid = 0;currentid <= total_size;currentid++) {
 							if(redo.get_old_hashtable().containsKey(currentid)) {
 								if(redo.get_old_hashtable().get(currentid) instanceof Employee) {
 									if(redo.get_old_hashtable().get(currentid).get_type() == 'C') {
@@ -512,6 +518,10 @@ public class Main {
 			
 			if(sel == 9) { // modificar agenda de pagamento				
 				int y =-1;
+				System.out.println("Lista de funcionários cadastrados:");
+				System.out.println();
+				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
+				System.out.println();
 				System.out.println("Informe o Id do empregado: ");
 				//Try
 				
@@ -595,7 +605,7 @@ public class Main {
 					else System.out.println("Nao foi possivel associar empregado.");
 				}
 				else System.out.println("Nao foi possivel encontrar o empregado.");
-				System.out.println("Pressione enter para continuar.");
+				System.out.println("Agenda de " + HT.get(y).get_name() + " modificada com sucesso!! " + "Pressione enter para continuar.");
 				S.nextLine();
 			}
 			if(sel == 10) // criar agenda de pagamento				
@@ -633,8 +643,12 @@ public class Main {
 				System.out.println("Pressione enter para continuar.");
 				S.nextLine();
 			}		
-			if(sel == 11) {
-				
+			if(sel == 11) { //Mostrar funcionarios cadastrados
+				System.out.println();
+				System.out.println("Lista de funcionários cadastrados:");
+				System.out.println();
+				for(Integer X : HT.keySet()) { HT.get(X).show_employee_data(); }
+				System.out.println();
 			}
 		//S.close();
 		}

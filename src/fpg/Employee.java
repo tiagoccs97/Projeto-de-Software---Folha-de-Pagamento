@@ -202,14 +202,21 @@ public class Employee {
 		
 		String aux_type = "0";
 		String aux_syndicate = "0";
+		String aux_pmethod= "0";
 		if(this.syndicate == true)  {aux_syndicate = "true";}
 		if(this.syndicate == false)  {aux_syndicate = "false";}
 		
 		if(this.type == 'A') {aux_type = "Assalaried";}
 		else if(this.type == 'H') {aux_type = "Hourly";}
-		else if(this.type == 'C') {aux_type = "Commissioned";}		
-		if(syndicate == true) System.out.print("ID: " + this.id + "/n" + "ID do Sindicato: " + this.id_s + "/n" + "Nome: " + this.name + "/n" + "Endereco: " + this.adress + "/n" + "Tipo de funcionario: " + aux_type + "/n" + "Metodo de pagamento: " + this.payment_method + "/n" + "Pertente ao sindicato: " + aux_syndicate + "/n" + "Primeiro dia da semana: " + this.first_week_day + "/n" + "Primeiro dia de cadastro: " + this.first_day + "/n" + "Primeiro mes de cadastro: " + this.first_month + "/n" + "Primeiro ano de cadastro: " + this.first_year + "/n" + "Agenda de pagamento: " + this.agenda);
-		else System.out.print("ID: " + this.id + "/n" + "Nome: " + this.name + "/n" + "Endereco: " + this.adress + "/n" + "Tipo de funcionario: " + aux_type + "/n" + "Metodo de pagamento: " + this.payment_method + "/n" + "Pertente ao sindicato: " + aux_syndicate + "/n" + "Primeiro dia da semana: " + this.first_week_day + "/n" + "Primeiro dia de cadastro: " + this.first_day + "/n" + "Primeiro mes de cadastro: " + this.first_month + "/n" + "Primeiro ano de cadastro: " + this.first_year + "/n" + "Agenda de pagamento: " + this.agenda);
+		else if(this.type == 'C') {aux_type = "Commissioned";}	
+		
+		if(this.payment_method == 1) {aux_pmethod = "Cheque pelos correios";}
+		else if(this.payment_method == 2) {aux_pmethod = "Cheque em mãos";}
+		else if(this.payment_method == 3) {aux_pmethod = "Deposito em conta bancaria";}	
+		
+		if(syndicate == true) System.out.print("ID: " + this.id + "\n" + "ID do Sindicato: " + this.id_s + "\n" + "Nome: " + this.name + "\n" + "Endereco: " + this.adress + "\n" + "Tipo de funcionario: " + aux_type + "\n" + "Metodo de pagamento: " + aux_pmethod + "\n" + "Pertente ao sindicato: " + aux_syndicate + "\n" + "Primeiro dia da semana: " + this.first_week_day + "\n" + "Primeiro dia de cadastro: " + this.first_day + "\n" + "Primeiro mes de cadastro: " + this.first_month + "\n" + "Primeiro ano de cadastro: " + this.first_year + "\n" + "Agenda de pagamento: " + this.agenda + "\n");
+		else System.out.print("ID: " + this.id + "\n" + "Nome: " + this.name + "\n" + "Endereco: " + this.adress + "\n" + "Tipo de funcionario: " + aux_type + "\n" + "Metodo de pagamento: " + aux_pmethod + "\n" + "Pertente ao sindicato: " + aux_syndicate + "\n" + "Primeiro dia da semana: " + this.first_week_day + "\n" + "Primeiro dia de cadastro: " + this.first_day + "\n" + "Primeiro mes de cadastro: " + this.first_month + "\n" + "Primeiro ano de cadastro: " + this.first_year + "\n" + "Agenda de pagamento: " + this.agenda + "\n");
+		System.out.println("--------------------------------------------------------");
 	}
 	public void change_employee_data(Employee aux) {
 		
@@ -218,7 +225,7 @@ public class Employee {
 			int aux_int = -1;
 			String aux_n;
 			double aux_d=0;
-			char aux_c = aux.get_type();
+			char aux_c = 'A';
 			int aux_i;
 			boolean aux_b;
 			System.out.println("Deseja alterar o Nome? (1 = Sim / 2 = Nao)");
@@ -242,24 +249,22 @@ public class Employee {
 			System.out.println("Deseja alterar o tipo de funcionario? (1 = Sim / 2 = Nao)");
 			aux_int = read.nextInt();
 			read.nextLine();
-			if(aux_int == 1) {
-				try {
-					System.out.println("Digite um dos caracteres seguintes:");
-					System.out.println("A - Assalariado");
-					System.out.println("H - Horista");
-					System.out.println("C - Comissionado");					
-					aux_c = read.next().charAt(0);
-				}
-				catch(NullPointerException e) {
-					System.out.println("Digite um caractere valido!!");
-				}
-				
-				this.type = aux_c;
-				aux_int = -1;
-			}
-			if(type == 'A') {
+			if(this.type == 'A') {
 				try{
 					System.out.println("Digite o salario mensal:");
+					aux_d = read.nextDouble();
+				}
+				catch(InputMismatchException e) {
+					System.out.println("Digite um numero valido!!!");
+				}
+				catch(NumberFormatException e) {
+					System.out.println("Digite um numero valido!!!");
+				}				
+				aux.set_salary(aux_d);											
+			}	
+			else if(this.type == 'H') {
+				try {						
+					System.out.println("Digite o salario por hora trabalhada:");
 					aux_d = read.nextDouble();
 				}
 				catch(NullPointerException e) {
@@ -270,39 +275,12 @@ public class Employee {
 				}
 				catch(NumberFormatException e) {
 					System.out.println("Digite um numero valido!!!");
-				}				
-				aux.set_salary(aux_d);							
-				if(syndicate == true) {
-					System.out.println("Digite a taxa sindical deste funcionario");
-					syndicate_tax = read.nextDouble();
-					aux.set_syndicate_tax(syndicate_tax);					
-				}					
-			}	
-			else if(type == 'H') {
-				try{						
-					System.out.println("Digite o salario por hora trabalhada:");
-					salary = read.nextDouble();
-				}
-				catch(NullPointerException e) {
-					System.out.println("Digite um numero valido!!!");
-				}
-				catch(InputMismatchException e) {
-					System.out.println("Digite um numero valido!!!");
-				}
-				catch(NumberFormatException e) {
-					System.out.println("Digite um numero valido!!!");
-				}
-				
-				Hourly aux2 = (Hourly) aux;
-				if(syndicate == true) {
-					System.out.println("Digite a taxa sindical deste funcionario");
-					syndicate_tax = read.nextDouble();
-					aux2.set_syndicate_tax(syndicate_tax);
-					
-				}
+				}	
+					Hourly aux1 = (Hourly) aux;
+					aux1.set_salary(aux_d);
 										
 			}	
-			else if(type == 'C') {
+			else if(this.type == 'C') {
 				try{						
 					System.out.println("Digite a porcentagem da commissao:");
 					aux_d = read.nextDouble();
@@ -317,13 +295,7 @@ public class Employee {
 					System.out.println("Digite um numero valido!!!");
 				}					
 				Commissioned aux2 = (Commissioned) aux;
-				if(syndicate == true) {
-					System.out.println("Digite a taxa sindical deste funcionario:");
-					syndicate_tax = read.nextDouble();
-					aux2.set_syndicate_tax(syndicate_tax);
-					
-				}
-												
+				aux2.set_commission_percentage(aux_d);									
 			}	
 			System.out.println("Deseja alterar o metodo de pagamento do funcionario? (1 = Sim / 2 = Nao)");
 			aux_int = read.nextInt();
@@ -362,33 +334,7 @@ public class Employee {
 					}
 				}
 			}
-			System.out.println("Deseja alterar o dia da semana a ser pago? (1 = Sim / 2 = Nao)");
-			aux_int = read.nextInt();
-			read.nextLine();
-			if(aux_int == 1) {
-				System.out.println("Digite o numero do novo dia da semana:");
-				System.out.println("Opcoes: 1-Segunda, 2-Terca, 3-Quarta, 4-Quinta ou 5-Sexta");
-				aux_i = read.nextInt();
-				this.payment_week_day = aux_i;
-				aux_int = -1;
-			}
-			System.out.println("Deseja alterar o dia do mes a ser pago? (1 = Sim / 2 = Nao)");
-			aux_int = read.nextInt();
-			if(aux_int == 1) {
-				System.out.println("Digite o numero do novo dia de pagamento:");
-				aux_i = read.nextInt();
-				this.payment_day = aux_i;
-				aux_int = -1;
-			}
-			System.out.println("Deseja alterar a frequencia/agenda de pagamento? (1 = Sim / 2 = Nao)");
-			aux_int = read.nextInt();
-			read.nextLine();
-			if(aux_int == 1) {
-				System.out.println("Digite a descricao da nova frequencia(Semanalmente, Mensalmente, Bi-Semanalmente, Semanal Segunda, Semanal Terca:");
-				aux_n = read.nextLine();
-				this.agenda = aux_n;
-				aux_int = -1;
-			}
+			
 		
 		System.out.println("Dados alterados com sucesso!");
 		System.out.println();
